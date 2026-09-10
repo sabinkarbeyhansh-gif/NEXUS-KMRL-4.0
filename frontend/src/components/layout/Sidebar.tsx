@@ -183,32 +183,45 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, setMobileO
               <img
                 src={currentUser.avatarUrl}
                 alt={currentUser.name}
-                className="w-8 h-8 rounded-full border-2 border-cyan-500/60 object-cover"
+                className="w-9 h-9 rounded-full border-2 border-cyan-400 object-cover shadow-sm"
               />
               <div className="truncate flex-1">
                 <p className="text-xs font-bold text-white truncate">{currentUser.name}</p>
-                <p className="text-[10px] text-cyan-400 font-mono truncate flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                  {currentUser.role} • {currentUser.department}
+                <p className="text-[10px] text-cyan-300 font-medium truncate">
+                  {currentUser.designation || `${currentUser.role} • ${currentUser.department}`}
                 </p>
               </div>
             </div>
 
-            {/* Segmented Role Control */}
-            <div className="grid grid-cols-3 gap-1 pt-1">
-              {(['ADMIN', 'MANAGER', 'OFFICER'] as const).map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setRole(r)}
-                  className={`text-[10px] py-1 px-1 rounded-lg font-mono font-bold transition-all ${
-                    currentUser.role === r
-                      ? 'bg-cyan-500 text-slate-950 shadow-sm'
-                      : 'bg-[#132042] text-slate-300 hover:text-white'
-                  }`}
-                >
-                  {r}
-                </button>
-              ))}
+            {/* All 5 Role Switcher Pills */}
+            <div className="pt-1 space-y-1">
+              <span className="text-[9px] font-mono text-slate-400 block font-bold uppercase">
+                Active Operational Role:
+              </span>
+              <div className="grid grid-cols-5 gap-1">
+                {(['ADMIN', 'MANAGER', 'OFFICER', 'AUDITOR', 'VIEWER'] as const).map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => setRole(r)}
+                    title={`Switch identity to ${r}`}
+                    className={`text-[9px] py-1 px-0.5 rounded font-mono font-bold transition-all text-center ${
+                      currentUser.role === r
+                        ? r === 'ADMIN'
+                          ? 'bg-cyan-500 text-slate-950 font-black shadow-sm'
+                          : r === 'MANAGER'
+                          ? 'bg-amber-500 text-slate-950 font-black shadow-sm'
+                          : r === 'OFFICER'
+                          ? 'bg-emerald-500 text-slate-950 font-black shadow-sm'
+                          : r === 'AUDITOR'
+                          ? 'bg-purple-500 text-white font-black shadow-sm'
+                          : 'bg-sky-500 text-slate-950 font-black shadow-sm'
+                        : 'bg-[#132042] text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {r.slice(0, 3)}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         ) : (

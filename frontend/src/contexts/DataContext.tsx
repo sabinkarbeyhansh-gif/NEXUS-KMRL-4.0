@@ -40,6 +40,7 @@ interface DataContextType {
   updateTaskStatus: (taskId: string, status: TaskStatus, evidenceFile?: string) => void;
   markNotificationAsRead: (notifId: string) => void;
   runGuidedDemoScenario: () => Promise<void>;
+  instantCompleteDemo: () => void;
   resetDemoData: () => void;
 }
 
@@ -250,7 +251,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     for (let step = 1; step <= 13; step++) {
       setDemoStep(step);
-      await sleep(1000);
+      await sleep(400);
 
       if (step === 5) {
         // Inject new live demo document
@@ -346,6 +347,75 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsProcessingDemo(false);
   };
 
+  const instantCompleteDemo = () => {
+    setIsProcessingDemo(false);
+    setDemoStep(13);
+
+    // Ensure live document is injected
+    if (!documents.some((d) => d.id.startsWith('DOC-LIVE-'))) {
+      const demoDoc: DocumentItem = {
+        id: 'DOC-LIVE-9001',
+        title: 'Special Safety Order: Palarivattom Station Platform Screen Door Interlock Protocol',
+        fileName: 'KMRL_SFT_PALARIVATTOM_PSD_2026.pdf',
+        fileType: 'PDF',
+        fileSize: '5.2 MB',
+        department: 'Safety',
+        language: 'Bilingual (EN/ML)',
+        aiPriority: 'CRITICAL',
+        status: 'PROCESSED',
+        aiConfidence: 99,
+        aiPriorityReason: 'Immediate safety directive: Platform Screen Door (PSD) optical interlock beam alignment failed at Palarivattom Platform 1.',
+        summary: 'പാലാരിവട്ടം മെട്രോ സ്റ്റേഷനിലെ ഒന്നാം പ്ലാറ്റ്‌ഫോമിലെ സ്ക്രീൻ ഡോർ ഒപ്റ്റിക്കൽ സെൻസർ തകരാർ പരിഹരിക്കാനുള്ള അടിയന്തിര നിർദ്ദേശം.',
+        keyFacts: [
+          'Palarivattom Platform 1 Door 7 sensor misaligned by 4.2mm',
+          'Direct safety hazard for boarding passengers',
+          'Immediate 24-hour compliance deadline',
+        ],
+        receivedDate: new Date().toISOString(),
+        createdDate: new Date().toISOString(),
+        submissionDeadline: new Date(Date.now() + 86400000).toISOString(),
+        assignedTo: 'S. Pradeep',
+        riskScore: 98,
+        station: 'Palarivattom',
+        storagePath: 'Safety/2026/KMRL_SFT_PALARIVATTOM_PSD_2026.pdf',
+        timeline: [
+          { date: 'Just now', stage: 'Document Received', description: 'Live OCR & Ingestion Pipeline', status: 'completed' },
+          { date: 'In 24h', stage: 'Interlock Certification Deadline', description: 'Station reopening compliance', status: 'current' },
+        ],
+        entities: [
+          { id: 'ENT-LIVE-1', name: 'Palarivattom Station', type: 'STATION', occurrences: 14 },
+          { id: 'ENT-LIVE-2', name: 'Platform Screen Doors', type: 'ASSET', occurrences: 19 },
+        ],
+        actions: [
+          {
+            id: 'ACT-LIVE-1',
+            task: 'Re-align optical sensor beam on Palarivattom PSD Gate 7',
+            department: 'Safety',
+            assignedPerson: 'S. Pradeep',
+            priority: 'CRITICAL',
+            deadline: new Date(Date.now() + 86400000).toISOString(),
+            status: 'IN_PROGRESS',
+            evidenceRequired: 'Digital lux meter reading and signed gate closure certificate',
+            sourceReference: 'Page 3, Technical Directive',
+          },
+        ],
+        risks: [
+          {
+            id: 'RSK-LIVE-1',
+            title: 'Passenger Platform Fall Hazard at Palarivattom',
+            description: 'Door interlock bypass prevents automatic emergency brakes.',
+            severity: 'CRITICAL',
+            category: 'SAFETY',
+            station: 'Palarivattom',
+            recommendedMitigation: 'Deploy human safety marshal at Gate 7 during every train arrival.',
+            sourceReference: 'Page 1, Urgent Executive Warning',
+          },
+        ],
+      };
+      addDocument(demoDoc);
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -369,6 +439,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateTaskStatus,
         markNotificationAsRead,
         runGuidedDemoScenario,
+        instantCompleteDemo,
         resetDemoData,
       }}
     >

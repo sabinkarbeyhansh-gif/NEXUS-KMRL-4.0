@@ -43,7 +43,7 @@ export const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { isProcessingDemo, demoStep, runGuidedDemoScenario, resetDemoData } = useData();
+  const { isProcessingDemo, demoStep, runGuidedDemoScenario, instantCompleteDemo, resetDemoData } = useData();
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -164,14 +164,25 @@ export const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
             Reset State
           </button>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            {demoStep < 13 && (
+              <button
+                onClick={instantCompleteDemo}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-all"
+                title="Immediately jump to Step 13 without waiting"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                Fast-Forward All (Instant)
+              </button>
+            )}
+
             {demoStep === 13 && (
               <button
                 onClick={() => {
                   onClose();
                   navigate('/graph');
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500 text-black text-xs font-bold shadow-lg shadow-cyan-500/25"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 text-xs font-black shadow-lg shadow-cyan-500/25 transition-all hover:scale-105"
               >
                 Inspect Updated Graph <ArrowRight className="w-3.5 h-3.5" />
               </button>
@@ -180,7 +191,7 @@ export const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
             <button
               onClick={runGuidedDemoScenario}
               disabled={isProcessingDemo}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black text-xs font-extrabold shadow-lg shadow-amber-500/25 transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 text-xs font-black shadow-lg shadow-amber-500/25 transition-all disabled:opacity-50"
             >
               <Play className="w-4 h-4 fill-current" />
               {isProcessingDemo ? 'Executing Pipeline...' : demoStep === 13 ? 'Re-run Demo' : 'Start 13-Step Demo'}

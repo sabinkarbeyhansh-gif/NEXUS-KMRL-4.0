@@ -31,6 +31,8 @@ export interface User {
   role: UserRole;
   department: DepartmentName;
   avatarUrl?: string;
+  designation?: string;
+  permissions?: string[];
 }
 
 export interface DocumentTimelineEntry {

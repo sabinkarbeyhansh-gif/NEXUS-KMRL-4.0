@@ -10,9 +10,11 @@ import {
   Mic,
   Cpu,
   Search,
+  ShieldCheck,
 } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useData } from '../../contexts/DataContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { formatISTFull } from '../../utils/dateTime';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,6 +32,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   onOpenDemoModal,
 }) => {
   const { language, setLanguage, t } = useLanguage();
+  const { currentUser, setRole, allProfiles } = useAuth();
   const {
     aiStatus,
     notifications,
@@ -128,6 +131,23 @@ export const TopBar: React.FC<TopBarProps> = ({
           <Cpu className="w-4 h-4 text-purple-400" />
           <span className="text-slate-300 text-xs font-mono font-bold">{aiStatus.provider}</span>
           <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
+        </div>
+
+        {/* Assigned Operational Role Selector */}
+        <div className="relative hidden md:block">
+          <select
+            value={currentUser.role}
+            onChange={(e) => setRole(e.target.value as any)}
+            className="appearance-none bg-[#0E1B3E] border border-[#1E325C] hover:border-cyan-500/40 rounded-xl px-3 py-1.5 text-xs font-bold cursor-pointer focus:outline-none pr-7 font-mono shadow-xs text-cyan-300"
+            title={`Assigned Persona: ${currentUser.name} (${currentUser.designation || currentUser.role})`}
+          >
+            {allProfiles.map((p) => (
+              <option key={p.role} value={p.role} className="bg-[#0E1834] text-white">
+                {p.role}: {p.name.split(' ')[0]} ({p.badge})
+              </option>
+            ))}
+          </select>
+          <ShieldCheck className="w-3.5 h-3.5 text-cyan-400 absolute right-2 top-2.5 pointer-events-none" />
         </div>
 
         {/* Language Selector */}
