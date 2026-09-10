@@ -164,9 +164,13 @@ export const api = {
   },
 
   // Analytics
-  getAnalytics: async () => {
+  getAnalytics: async (timeRange?: string, year?: number, day?: string) => {
     try {
-      const res = await fetch(`${BASE_URL}/analytics`);
+      const params = new URLSearchParams();
+      if (timeRange) params.append('time_range', timeRange);
+      if (year) params.append('year', year.toString());
+      if (day) params.append('day', day);
+      const res = await fetch(`${BASE_URL}/analytics?${params.toString()}`);
       if (!res.ok) return null;
       return await res.json();
     } catch {
