@@ -55,8 +55,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, setMobileO
       title: 'AI & KNOWLEDGE GRAPH',
       items: [
         { path: '/graph', label: t.nav.knowledgeGraph, icon: Network, highlight: true, iconColor: 'text-cyan-400' },
-        { path: '/intelligence', label: t.nav.intelligence, icon: BrainCircuit, badge: 'AI', badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40', iconColor: 'text-purple-400' },
-        { path: '/conflicts', label: 'Conflict Detector', icon: Scale, badge: 'AI', badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40', iconColor: 'text-rose-400' },
+        { path: '/intelligence', label: 'SCADA Safety Hub', icon: BrainCircuit, badge: 'SCADA', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40', iconColor: 'text-cyan-400' },
+        { path: '/conflicts', label: 'Regulatory Matrix', icon: Scale, badge: 'CMRS', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40', iconColor: 'text-amber-400' },
         {
           path: '/risks',
           label: t.nav.riskRadar,
