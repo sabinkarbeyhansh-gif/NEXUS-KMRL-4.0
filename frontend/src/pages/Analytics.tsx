@@ -4,24 +4,15 @@ import {
   TrendingUp,
   Calendar,
   CheckCircle2,
-  Clock,
   Flame,
   FileText,
   Download,
-  Sparkles,
   Users,
-  ArrowUpRight,
   ShieldCheck,
   History,
-  Layers,
-  Filter,
-  Activity,
-  MapPin,
   Radio,
 } from 'lucide-react';
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -819,7 +810,9 @@ export const Analytics: React.FC = () => {
     const fetchAnalytics = async () => {
       const yearParam = selectedYear === 'all' ? undefined : selectedYear;
       const res = await api.getAnalytics(timeRange, yearParam);
-      if (res) setBackendData(res);
+      if (res) {
+        setBackendData(res);
+      }
     };
     fetchAnalytics();
   }, [timeRange, selectedYear]);
@@ -987,6 +980,11 @@ export const Analytics: React.FC = () => {
             <div>
               <h1 className="text-xl md:text-2xl font-black text-white tracking-tight flex items-center gap-2">
                 KMRL Operational Analytics & Historical Intelligence
+                {backendData && (
+                  <span className="hidden sm:inline-flex text-[9px] px-2 py-0.5 rounded font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    Live OCC Feed
+                  </span>
+                )}
               </h1>
               <p className="text-xs text-slate-400 font-mono mt-0.5">
                 Dynamic daily SCADA telemetry & authentic longitudinal records from inception (2017) to till date (2026)
